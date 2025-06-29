@@ -3,7 +3,7 @@
 script_file=${BASH_SOURCE:-$0}
 script_dir=$(readlink -f "$(dirname "${script_file}")")
 
-project_name='Sample'
+project_name='glibc'
 source  "${script_dir}/config/common-config.rc"
 
 umask  0022

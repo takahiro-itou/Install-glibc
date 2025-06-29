@@ -3,7 +3,7 @@
 current_srcfile=${BASH_SOURCE:-$0}
 script_dir=$(readlink -f "$(dirname "${current_srcfile}")")
 
-project_name='Sample'
+project_name='glibc'
 source  "${script_dir}/config/common-config.rc"
 
 umask  0022
@@ -68,8 +68,8 @@ pushd    "${build_base_dir}"
 mkdir -p "${target_version}/build"
 cd "${target_version}"
 
-tar -xzf "${installer_file}"
-mv -v "${target_version}" "source"
+tar -xJf "${installer_file}"
+mv -v "glibc-${target_version}" "source"
 cd  'build'
 
 ../source/configure     \
