@@ -23,7 +23,7 @@ install_base_dir=${2:-"${install_base_default}"}
 ##    2.  ファイルの確認とダウンロード
 ##
 
-target_prefix=$(readlink -m "${install_base_dir}/Sample-${target_version}")
+target_prefix=$(readlink -m "${install_base_dir}/${target_version}")
 if "${target_prefix}/Bin/SampleApplication" --version ; then
     # インストール済みなので何もしない
     echo  "Already installed in ${target_prefix}"   1>&2
@@ -64,11 +64,15 @@ sample_configure_opts='--with-cppunit=no'
 mkdir -p "${build_base_dir}"
 pushd    "${build_base_dir}"
 
-/usr/bin/rm -rf "Sample-${target_version}"
-tar -xzf "${installer_file}"
-cd "Sample-${target_version}"
+/usr/bin/rm -rf "${target_version}"
+mkdir -p "${target_version}/build"
+cd "${target_version}"
 
-./configure     \
+tar -xzf "${installer_file}"
+mv -v "${target_version}" "source"
+cd  'build'
+
+../source/configure     \
     --prefix="${target_prefix}"     \
     ${sample_configure_opts}        \
     ;
