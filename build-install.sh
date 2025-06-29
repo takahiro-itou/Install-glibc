@@ -24,7 +24,7 @@ install_base_dir=${2:-"${install_base_default}"}
 ##
 
 target_prefix=$(readlink -m "${install_base_dir}/${target_version}")
-if "${target_prefix}/Bin/SampleApplication" --version ; then
+if "${target_prefix}/bin/ldd" --version ; then
     # インストール済みなので何もしない
     echo  "Already installed in ${target_prefix}"   1>&2
     sleep 5
