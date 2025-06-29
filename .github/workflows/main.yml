@@ -1,0 +1,44 @@
+
+name : Install Test
+
+env:
+  INSTALL-BASE : target
+
+jobs :
+  install_job:
+    name    : A job to Install
+    runs-on : ubuntu-latest
+
+    strategy :
+      fail-fast : false
+
+      matrix :
+        target-version : [ 0.0.0 ]
+
+    steps :
+      - name : Checkout
+        uses : actions/checkout@v4
+        with :
+          submodules : recursive
+
+      - name : Run-Install
+        run  : |
+          /bin/bash -xue envclean-build.sh "${VERSION}" "${INSTALL_BASE}"
+        env   :
+          INSTALL_BASE : ${{ env.INSTALL-BASE }}
+          VERSION      : ${{ matrix.target-version }}
+        shell : bash
+
+      - name : Check
+        run  : |
+          pwd
+          ls -alR "${INSTALL_BASE}"
+          "${INSTALL_BASE}/Sample-${VERSION}/Bin/SampleApplication" --version
+        env   :
+          INSTALL_BASE : ${{ env.INSTALL-BASE }}
+          VERSION      : ${{ matrix.target-version }}
+        shell : bash
+
+on :
+  push :
+    branches : [ "master", "develop" ]

@@ -1,0 +1,12 @@
+#!/bin/bash  -xue
+
+mkdir -p .work
+/usr/bin/rm -f .work/index.html
+
+pushd  .work
+wget  https://ftp.gnu.org/gnu/glibc/
+popd
+
+grep -E '>glibc-2\.[0-9.]+\.tar\.gz<'  .work/index.html  |  \
+    sed -E 's/^.*a href="glibc-([0-9.]+)\.tar\.gz">.*$/\1/'  \
+    |  tee  VersionList.txt
