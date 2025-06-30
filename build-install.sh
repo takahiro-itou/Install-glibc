@@ -3,7 +3,7 @@
 current_srcfile=${BASH_SOURCE:-$0}
 script_dir=$(readlink -f "$(dirname "${current_srcfile}")")
 
-project_name='Sample'
+project_name='glibc'
 source  "${script_dir}/config/common-config.rc"
 
 umask  0022
@@ -23,8 +23,8 @@ install_base_dir=${2:-"${install_base_default}"}
 ##    2.  ファイルの確認とダウンロード
 ##
 
-target_prefix=$(readlink -m "${install_base_dir}/Sample-${target_version}")
-if "${target_prefix}/Bin/SampleApplication" --version ; then
+target_prefix=$(readlink -m "${install_base_dir}/${target_version}")
+if "${target_prefix}/bin/ldd" --version ; then
     # インストール済みなので何もしない
     echo  "Already installed in ${target_prefix}"   1>&2
     sleep 5
@@ -64,11 +64,15 @@ sample_configure_opts='--with-cppunit=no'
 mkdir -p "${build_base_dir}"
 pushd    "${build_base_dir}"
 
-/usr/bin/rm -rf "Sample-${target_version}"
-tar -xzf "${installer_file}"
-cd "Sample-${target_version}"
+/usr/bin/rm -rf "${target_version}"
+mkdir -p "${target_version}/build"
+cd "${target_version}"
 
-./configure     \
+tar -xJf "${installer_file}"
+mv -v "glibc-${target_version}" "source"
+cd  'build'
+
+../source/configure     \
     --prefix="${target_prefix}"     \
     ${sample_configure_opts}        \
     ;
