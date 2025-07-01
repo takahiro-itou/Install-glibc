@@ -21,6 +21,12 @@ jobs :
         with :
           submodules : recursive
 
+      - name : Bison
+        run  : |
+          which bison
+          bison --version
+        shell : bash
+
       - name : Run-Install
         run  : |
           /bin/bash -xue envclean-build.sh "${VERSION}" "${INSTALL_BASE}"
@@ -33,7 +39,7 @@ jobs :
         run  : |
           pwd
           ls -alR "${INSTALL_BASE}"
-          "${INSTALL_BASE}/Sample-${VERSION}/Bin/SampleApplication" --version
+          "${INSTALL_BASE}/glibc-${VERSION}/bin/ldd" --version
         env   :
           INSTALL_BASE : ${{ env.INSTALL-BASE }}
           VERSION      : ${{ matrix.target-version }}
