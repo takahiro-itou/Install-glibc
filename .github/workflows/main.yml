@@ -38,7 +38,7 @@ jobs :
       - name : Check
         run  : |
           pwd
-          ls -alR "${INSTALL_BASE}"
+          ls -al "${INSTALL_BASE}"
           "${INSTALL_BASE}/glibc-${VERSION}/bin/ldd" --version
         env   :
           INSTALL_BASE : ${{ env.INSTALL-BASE }}
