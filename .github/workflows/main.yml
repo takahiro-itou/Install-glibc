@@ -13,13 +13,19 @@ jobs :
       fail-fast : false
 
       matrix :
-        target-version : [ 0.0.0 ]
+        target-version : [ 2.41 ]
 
     steps :
       - name : Checkout
         uses : actions/checkout@v4
         with :
           submodules : recursive
+
+      - name : Bison
+        run  : |
+          which bison
+          bison --version
+        shell : bash
 
       - name : Run-Install
         run  : |
@@ -32,8 +38,8 @@ jobs :
       - name : Check
         run  : |
           pwd
-          ls -alR "${INSTALL_BASE}"
-          "${INSTALL_BASE}/Sample-${VERSION}/Bin/SampleApplication" --version
+          ls -al "${INSTALL_BASE}"
+          "${INSTALL_BASE}/${VERSION}/bin/ldd" --version
         env   :
           INSTALL_BASE : ${{ env.INSTALL-BASE }}
           VERSION      : ${{ matrix.target-version }}
